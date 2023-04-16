@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.52.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.5.0-alpha.2" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.5.0-alpha.2" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.14" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.0.0-rc9.14" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="API\**" />
+      <Compile Remove="api-grpc-client\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="API\**" />
+      <EmbeddedResource Remove="api-grpc-client\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="API\**" />
+      <None Remove="api-grpc-client\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="API\**" />
+      <Content Remove="api-grpc-client\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="API\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="API\appsettings.json" />
+      <_ContentIncludedByDefault Remove="API\bin\Debug\net7.0\API.deps.json" />
+      <_ContentIncludedByDefault Remove="API\bin\Debug\net7.0\API.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="API\bin\Debug\net7.0\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="API\bin\Debug\net7.0\appsettings.json" />
+      <_ContentIncludedByDefault Remove="API\obj\API.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="API\obj\Debug\net7.0\staticwebassets.build.json" />
+      <_ContentIncludedByDefault Remove="API\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="API\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="API\Properties\launchSettings.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\appsettings.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\bin\Debug\net7.0\API.deps.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\bin\Debug\net7.0\API.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\bin\Debug\net7.0\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\bin\Debug\net7.0\appsettings.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\obj\api-grpc-client.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\obj\API.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\obj\Debug\net7.0\staticwebassets.build.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="api-grpc-client\Properties\launchSettings.json" />
+    </ItemGroup>
+
+</Project>
