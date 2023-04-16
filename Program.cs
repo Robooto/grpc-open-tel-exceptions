@@ -20,7 +20,7 @@ builder.Services.AddOpenTelemetry().WithTracing(builder => builder.SetResourceBu
     .AddGrpcClientInstrumentation()
     .AddJaegerExporter());
 
-builder.Services.AddGrpc(options => { options.Interceptors.Add<ErrorDescriptionInterceptor>();});
+builder.Services.AddGrpc(options => { options.Interceptors.Add<ErrorInterceptor>();});
 builder.Services.AddGrpcReflection();
 
 var app = builder.Build();
@@ -34,7 +34,7 @@ app.MapGet("/",
 
 app.Run();
 
-public class ErrorDescriptionInterceptor : Interceptor
+public class ErrorInterceptor : Interceptor
 {
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,
