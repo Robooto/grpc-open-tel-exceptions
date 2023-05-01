@@ -32,3 +32,10 @@ services:
         - ASPNETCORE_URLS=http://+:80
         - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
         - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+        
+  prometheus:
+      image: prom/prometheus:latest
+      volumes:
+        - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      ports:
+        - "9090:9090"

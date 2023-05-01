@@ -2,11 +2,9 @@ using System.Diagnostics;
 using grpc_open_tel.Services;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Status = OpenTelemetry.Trace.Status;
-using StatusCode = OpenTelemetry.Trace.StatusCode;
+using OpenTelemetry.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
 
 // Add services to the container.
-builder.Services.AddOpenTelemetry().WithTracing(builder => builder.SetResourceBuilder(ResourceBuilder.CreateEmpty().AddService("grpc-server"))
+builder.Services.AddOpenTelemetry().WithTracing(builder => builder
+    .SetResourceBuilder(ResourceBuilder.CreateEmpty().AddService("grpc-server"))
     .AddSource("grpc-server")
     .AddAspNetCoreInstrumentation()
     .AddGrpcClientInstrumentation()
-    .AddJaegerExporter());
+    .AddJaegerExporter())
+    .WithMetrics(builder => builder 
+        .AddConsoleExporter() 
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddPrometheusExporter());
 
 builder.Services.AddGrpc(options => { options.Interceptors.Add<ErrorInterceptor>();});
 builder.Services.AddGrpcReflection();
@@ -26,6 +31,7 @@ builder.Services.AddGrpcReflection();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.MapGrpcService<GreeterService>();
 app.MapGrpcReflectionService();
 app.MapGet("/",

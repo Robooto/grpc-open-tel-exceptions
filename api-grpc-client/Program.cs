@@ -1,5 +1,6 @@
 using grpc_open_tel;
 using OpenTelemetry;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -11,7 +12,14 @@ builder.Services.AddOpenTelemetry().WithTracing(builder => builder.SetResourceBu
     .AddAspNetCoreInstrumentation()
     .AddHttpClientInstrumentation()
     .AddGrpcClientInstrumentation()
-    .AddJaegerExporter());
+    .AddJaegerExporter())
+    .WithMetrics(builder => builder 
+        .AddConsoleExporter() 
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddPrometheusExporter()
+        .AddMeter("Metrics.NET"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,7 +31,7 @@ builder.Services.AddGrpcClient<Greeter.GreeterClient>(options =>
 }).ConfigurePrimaryHttpMessageHandler(GetInsecureHandler);
 
 var app = builder.Build();
-
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
